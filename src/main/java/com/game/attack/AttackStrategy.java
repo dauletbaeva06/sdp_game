@@ -1,4 +1,5 @@
 package com.game.attack;
 
-public class AttackStrategy {
+public interface AttackStrategy {
+    int attack();
 }
