@@ -14,6 +14,7 @@ public class Hero {
     private AttackStrategy attackStrategy;
     private final List<Observer> observers = new ArrayList<>();
 
+    // --- Constructor ---
     public Hero(String name, String element, String weapon, int health) {
         this.name = name;
         this.element = element;
@@ -21,24 +22,45 @@ public class Hero {
         this.health = health;
     }
 
-    public String getName() { return name; }
-    public boolean isAlive() { return health > 0; }
-
-    public String getElement() { return element;}
-    public String getWeapon() { return weapon; }
-    public int getHealth() { return health; }
-
-    public void registerObserver(Observer o) { observers.add(o); }
-
-    private void notifyObservers(String event) {
-        for (Observer o : observers) o.update(event);
+    // --- Getters ---
+    public String getName() {
+        return name;
     }
 
+    public String getElement() {
+        return element;
+    }
+
+    public String getWeapon() {
+        return weapon;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
+    // --- Observer Methods ---
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    private void notifyObservers(String event) {
+        for (Observer o : observers) {
+            o.update(event);
+        }
+    }
+
+    // --- Strategy Setter ---
     public void setAttackStrategy(AttackStrategy strategy) {
         this.attackStrategy = strategy;
         notifyObservers(name + " switched to " + strategy.getClass().getSimpleName());
     }
 
+    // --- Attack Logic ---
     public void attack(Hero target) {
         if (attackStrategy == null) {
             notifyObservers(name + " has no attack strategy!");
@@ -49,6 +71,7 @@ public class Hero {
         notifyObservers("✨ " + name + " used " + element + " attack on " + target.name + " for " + damage + " damage!");
     }
 
+    // --- Damage Handling ---
     private void takeDamage(int damage) {
         health -= damage;
         if (health <= 0) {
